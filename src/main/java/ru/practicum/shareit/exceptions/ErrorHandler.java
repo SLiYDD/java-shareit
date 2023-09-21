@@ -22,6 +22,20 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
         log.warn("Error", e);
-        return new ErrorResponse("error", e.getNestedPath());
+        return new ErrorResponse("error", e.getMessage());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotFoundException(final NotFoundException e) {
+        log.warn("Error", e);
+        return new ErrorResponse("error", e.getMessage());
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleNotFoundException(final ResourceAlreadyExistException e) {
+        log.warn("Error", e);
+        return new ErrorResponse("error", e.getMessage());
     }
 }

@@ -10,6 +10,7 @@ import ru.practicum.shareit.user.UserStorage;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.model.User;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,10 +28,19 @@ public class UserServiceImpl implements UserService {
         return Mapper.toUserDto(userStorage.createUser(user));
     }
 
+
     @Override
-    public UserDto updateUser(User user) {
+    public UserDto updateUser(@Valid User user) {
         findOrThrow(user.getId());
-        return Mapper.toUserDto(userStorage.updateUser(user));
+        return Mapper.toUserDto(userStorage.updateUser(user)
+                .orElseThrow(() -> new ResourceAlreadyExistException("Email занят другим пользователем")));
+    }
+
+
+    @Override
+    public void removeUser(long userId) {
+        findOrThrow(userId);
+        userStorage.removeUser(userId);
     }
 
     @Override
@@ -39,8 +49,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
-    private User findOrThrow(long userId) {
+    @Override
+    public User findOrThrow(long userId) {
         return userStorage.findUserById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с ID : " + userId + " не найден"));
     }

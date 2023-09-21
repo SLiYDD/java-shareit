@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.ItemService;
@@ -8,19 +7,24 @@ import ru.practicum.shareit.item.ItemStorage;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.mapper.Mapper;
+import ru.practicum.shareit.user.UserService;
+
+import javax.validation.Valid;
 
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemStorage itemStorage;
+    private final UserService userService;
 
     @Override
-    public ItemDto create(ItemDto itemDto) {
-        return itemStorage.createItem(Mapper.toItem(itemDto));
+    public ItemDto createItem(Item item, long ownerId) {
+        userService.findOrThrow(ownerId);
+        return itemStorage.createItem(item.toBuilder().ownerId(ownerId).build());
     }
 
     @Override
-    public ItemDto update(ItemDto itemDto) {
+    public ItemDto updateItem(ItemDto itemDto) {
         return null;
     }
 
@@ -30,7 +34,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void delete(long itemId) {
+    public void deleteItem(long itemId) {
 
     }
 }

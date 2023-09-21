@@ -11,12 +11,14 @@ public class InMemoryUserStorage implements UserStorage {
     private HashMap<Long, User> users = new HashMap<>();
     private static long countId = 0L;
 
+
     @Override
     public User createUser(User user) {
         user.setId(++countId);
         users.put(countId, user);
         return users.get(countId);
     }
+
 
     @Override
     public Optional<User> findUserById(long userId) {
@@ -26,13 +28,15 @@ public class InMemoryUserStorage implements UserStorage {
         return Optional.empty();
     }
 
+
     @Override
     public List<User> findAllUsers() {
         return new ArrayList<>(users.values());
     }
 
+
     @Override
-    public User updateUser(User user) {
+    public Optional<User> updateUser(User user) {
         var userId = user.getId();
         var updateUser = users.get(userId);
         if (Objects.nonNull(user.getName())) {
@@ -40,12 +44,19 @@ public class InMemoryUserStorage implements UserStorage {
         }
 
         if (Objects.nonNull(user.getEmail())) {
+            if (findAllUsers().stream()
+                    .anyMatch(u -> u.getEmail().equals(user.getEmail()) && u.getId() != user.getId())) {
+                return Optional.empty();
+            }
             updateUser.setEmail(user.getEmail());
         }
-
         users.put(userId, updateUser);
-        return users.get(userId);
+        return Optional.of(users.get(userId));
     }
 
 
+    @Override
+    public void removeUser(long userId) {
+        users.remove(userId);
+    }
 }

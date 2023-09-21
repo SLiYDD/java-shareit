@@ -11,8 +11,9 @@ import javax.validation.constraints.Pattern;
 @Builder(toBuilder = true)
 public class UserDto {
     private long id;
-    @NotNull(message = "Не может быть пустым")
+    @NotBlank(message = "Не может быть пустым")
     private String name;
+    @NotNull(message = "Введите email адрес")
     @Pattern(regexp = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "Введите валидный email адрес")
     private String email;
 }

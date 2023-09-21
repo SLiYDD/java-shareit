@@ -1,14 +1,15 @@
 package ru.practicum.shareit.item;
 
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.model.Item;
 
 public interface ItemService {
 
-    ItemDto create(ItemDto itemDto);
+    ItemDto createItem(Item item, long ownerId);
 
-    ItemDto update(ItemDto itemDto);
+    ItemDto updateItem(ItemDto itemDto);
 
     ItemDto getItemById(long itemId);
 
-    void delete(long itemId);
+    void deleteItem(long itemId);
 }
