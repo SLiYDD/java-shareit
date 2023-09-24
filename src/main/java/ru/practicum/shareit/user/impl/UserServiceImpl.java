@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(@Valid User user) {
-        findOrThrow(user.getId());
+        findUserOrThrow(user.getId());
         return Mapper.toUserDto(userStorage.updateUser(user)
                 .orElseThrow(() -> new ResourceAlreadyExistException("Email занят другим пользователем")));
     }
@@ -39,18 +39,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeUser(long userId) {
-        findOrThrow(userId);
+        findUserOrThrow(userId);
         userStorage.removeUser(userId);
     }
 
     @Override
     public UserDto getUserById(Long userId) {
-        return Mapper.toUserDto(findOrThrow(userId));
+        return Mapper.toUserDto(findUserOrThrow(userId));
 
     }
 
     @Override
-    public User findOrThrow(long userId) {
+    public User findUserOrThrow(long userId) {
         return userStorage.findUserById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с ID : " + userId + " не найден"));
     }
