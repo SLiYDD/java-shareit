@@ -19,6 +19,7 @@ public final class Mapper {
 
     public static Item toItem(ItemDto itemDto) {
         return Item.builder()
+                .id(itemDto.getId())
                 .name(itemDto.getName())
                 .description(itemDto.getDescription())
                 .available(itemDto.getAvailable())
