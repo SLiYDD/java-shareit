@@ -38,4 +38,20 @@ public class ErrorHandler {
         log.warn("Error", e);
         return new ErrorResponse("Already Exist", e.getMessage());
     }
+
+    @ExceptionHandler(NotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNotValidException(final NotValidException e) {
+        log.warn("Error", e);
+        return new ErrorResponse("Bad request", e.getMessage());
+    }
+
+
+    @ExceptionHandler(UnsupportedStatusException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleUnsupportedStatusException(final UnsupportedStatusException e) {
+        log.warn("Error", e);
+        return new ErrorResponse(e.getMessage(), e.getMessage());
+    }
+
 }
