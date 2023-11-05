@@ -10,23 +10,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-
     List<Booking> findAllByBookerId(long bookerId, Sort sort);
 
     List<Booking> findAllByItemOwnerId(long ownerId, Sort sort);
 
-
     @Query(value = "select b from Booking b where b.item.owner.id = ?1 and b.status = ?2")
     List<Booking> findAllByOwnerId(long ownerId, Status status, Sort sort);
 
-
     List<Booking> findByItemIdAndStatus(long itemId, Status status, Sort sort);
 
-    List<Booking> findByBookerIdAndStartIsBeforeAndEndIsAfter(Long bookerId, LocalDateTime start,
-                                                              LocalDateTime end, Sort sort);
+    List<Booking> findByBookerIdAndStartIsBeforeAndEndIsAfter(Long bookerId, LocalDateTime start, LocalDateTime end, Sort sort);
 
-    List<Booking> findByItemOwnerIdAndStartIsBeforeAndEndIsAfter(Long ownerId, LocalDateTime start,
-                                                                 LocalDateTime end, Sort sort);
+    List<Booking> findByItemOwnerIdAndStartIsBeforeAndEndIsAfter(Long ownerId, LocalDateTime start, LocalDateTime end, Sort sort);
 
     List<Booking> findAllByBookerIdAndStatus(Long bookerId, Status status);
 
@@ -40,7 +35,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     List<Booking> findByItemOwnerIdAndEndIsBefore(long ownerId, LocalDateTime currentTime, Sort sort);
 
-
-    Booking findFirstByItemIdAndBookerIdAndEndIsBeforeAndStatus(Long itemId, Long userId,
-                                                                LocalDateTime end, Status status);
+    Booking findFirstByItemIdAndBookerIdAndEndIsBeforeAndStatus(Long itemId, Long userId, LocalDateTime end, Status status);
 }
